@@ -79,9 +79,9 @@ start ui-kit-playground.html       # Windows
 
 ## 디자인
 
-- 색: 무채색 + sage 액센트 1색(`#527D6F`). 텍스트 색은 흰 배경 대비 4.5:1 이상입니다.
+- 색: Polarize 10색 팔레트. 액센트는 파랑 `#25539B` 1색, 페이지 바탕은 무채색 `#F0F2F5`, 빨강·주황·호박·민트는 위험·경고·주의·성공 표시에만 씁니다. 모든 글자는 배경 대비 4.5:1 이상입니다.
 - 폰트: 제목 Plus Jakarta Sans, 본문 Noto Sans KR, 코드 JetBrains Mono
 - 아이콘: [Lucide](https://lucide.dev/) 인라인 SVG(`lucide-static@0.460.0`)
-- 라벨 칩: COLOR.json 17색 팔레트, 크기 sm 20px / md 24px / lg 28px
+- 라벨 칩: 팔레트 10색, 크기 sm 20px / md 24px / lg 28px
 
 자세한 값과 규칙은 [CLAUDE.md](CLAUDE.md)에 있습니다.
