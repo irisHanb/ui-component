@@ -2,8 +2,8 @@
 
 - 프로젝트: `/Users/hanb/dev-ai/lectures/solving-claude-code/ui-component`
 - 범위: 이번 세션
-- 추출 시각: 2026-10-18 10:30:41
-- 세션 수: 1 / 프롬프트 수: 24
+- 추출 시각: 2026-10-18 10:37:20
+- 세션 수: 1 / 프롬프트 수: 28
 
 ---
 
@@ -373,4 +373,20 @@ Never reuse tab IDs from a previous/other session. Follow these guidelines:
 3. If a tool returns an error indicating the tab doesn't exist or is invalid, call tabs_context_mcp to get fresh tab IDs
 4. When a tab is closed by the user or a navigation error occurs, call tabs_context_mcp to see what tabs are available</browser_instruction>
 main branch 에 push 하면 git pages 에 자동배포되도록 해
+
+### 25. 2026-10-18
+
+commit, push 해
+
+### 26. 2026-10-18
+
+*.yml 파일들은 변경 추적안해?
+
+### 27. 2026-10-18
+
+이 프로젝트 설명과 실행방법 정리해서 readme.md 업데이트 해줘
+
+### 28. 2026-10-18
+
+readme.md 파일에 github pages 주소도 업데이트해줘
 
