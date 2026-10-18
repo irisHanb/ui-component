@@ -1,7 +1,7 @@
 # UI Kit Playground
 
-프런트엔드 개발에 필요한 UI 컴포넌트 44종을 한 페이지에서 보고, 코드를 복사해 쓸 수 있는 레퍼런스 사이트입니다.
-CareerFoundry의 [32 UI Elements 글로서리](https://careerfoundry.com/en/blog/ui-design/ui-element-glossary/)에 나오는 32종에, 사이트에서 자주 쓰는 알림·레이어 컴포넌트 12종을 더했습니다.
+프런트엔드 개발에 필요한 UI 컴포넌트 46종을 한 페이지에서 보고, 코드를 복사해 쓸 수 있는 레퍼런스 사이트입니다.
+CareerFoundry의 [32 UI Elements 글로서리](https://careerfoundry.com/en/blog/ui-design/ui-element-glossary/)에 나오는 32종에, 사이트에서 자주 쓰는 알림·레이어 컴포넌트 12종과 이를 조합한 화면 패턴 2종(소셜 로그인, 회원가입)을 더했습니다.
 
 **바로 보기: [https://irishanb.github.io/ui-component/](https://irishanb.github.io/ui-component/)** (GitHub Pages)
 
@@ -26,6 +26,9 @@ CareerFoundry의 [32 UI Elements 글로서리](https://careerfoundry.com/en/blog
 | 정보 표시 | 8 | Comment, Feed, Icon, Loader, Notification, Progress Bar, Tag, Tooltip |
 | 컨테이너 | 4 | Accordion, Card, Carousel, Modal |
 | 공통 레이어 | 12 | Alert, Confirm, Notification Center, Toast, Snackbar, Bottom Sheet, Top Banner, Inline Alert, Slide-over, Popover, Full-screen Takeover, Command Bar |
+| 화면 패턴 | 2 | Social Login(카카오·네이버·Google·Apple + 이메일 로그인), Sign-up Form(비밀번호 강도·약관 동의·중복 이메일 오류) |
+
+화면 패턴은 화면만 제공합니다. 입력값은 서버로 보내지 않으며, 실제 소셜 로그인(OAuth)은 서버에서 인가 URL을 만들어 연결해야 합니다.
 
 ## 실행 방법
 
