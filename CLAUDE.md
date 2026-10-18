@@ -83,14 +83,21 @@ const components = [
   `position: fixed` 요소를 영역 안에 가둔다. `<dialog>`의 `showModal()`은
   미리보기에서만 `openInStage()`로 바꿔 끼워 `.stage` 안에 띄운다(배경·바깥
   클릭·Esc·`inert`를 흉내 냄). 복사용 코드는 그대로 `showModal()`을 쓴다.
-- **디자인 토큰은 `label-chip-system.html` 기준**이다(아래 portfolio의 `#2563EB`가
-  아님). 액센트 1색은 sage — 글자·채움 `#527D6F`(흰 글자 대비 4.64), hover·연한
-  배경 위 글자 `#456A5E`, 테두리·선택 막대 `#629584`, 연한 배경 `#E8F5F0`. 텍스트
-  `#1E2D3D`/`#4A5C6E`/`#5F6E7E`, 테두리 `#E2E6EC`/`#CDD3DC`, 페이지 `#F0F2F5`.
-  제목 Plus Jakarta Sans. 칩은 sm 20 / md 24 / lg 28px, 라벨 색은 COLOR.json 17색.
-  단 흰 글자가 AA 미달인 5종은 배경을 유지하고 같은 색상 계열의 어두운 글자로 바꿨다:
-  frontend `#001029`(5.05), backend `#002910`(7.15), design `#170029`(4.77),
-  bug `#280103`(5.03), magenta `#290020`(5.84). 17종 모두 4.5:1 이상.
+- **색은 Polarize 10색 팔레트 기준**이다(아래 portfolio의 `#2563EB`, 이전 sage
+  `#527D6F`가 아님): `#D5001A` `#FF6A00` `#FFB606` `#FFD973` `#FDF6DA` `#F2F7D8`
+  `#B0DDCD` `#41B4D6` `#25539B` `#192275`.
+  - 액센트 1색 파랑: 글자·채움·테두리·포커스 `#25539B`(흰 글자·흰 배경 위 7.53),
+    hover·연한 배경 위 글자 `#192275`, 연한 배경 `#E5EAF3`. 페이지 바탕 `#F0F2F5`(무채색).
+  - 의미 색(배경 / 테두리 / 글자): 위험 `#FAE0E4`/`#EE99A3`/`#C40018`(채움 `#D5001A`),
+    경고 `#FFEDE0`/`#FFC399`/`#AB4700`, 주의 `#FFF6E1`/`#FFE29B`/`#8A6200`,
+    성공 `#E7F5F0`/`#B0DDCD`/`#33775F`. 연한 배경은 팔레트 색 12%+흰색, 테두리는 40%,
+    글자는 같은 색상 계열에서 연한 배경 위 4.5:1 이상이 되도록 어둡게 만든 값.
+    `#D5001A`를 연한 위험 배경 위 글자로 쓰지 않는다(4.38).
+  - 텍스트 `#1E2D3D`/`#4A5C6E`/`#5F6E7E`(바탕 `#F0F2F5` 위 12.50/6.14/4.66), 테두리
+    `#E2E6EC`/`#CDD3DC`. 제목 Plus Jakarta Sans. 칩은 sm 20 / md 24 / lg 28px.
+  - 라벨 칩은 10색(red·orange·amber·yellow·cream·lime·mint·sky·blue·navy). 글자는 흰색과
+    `#1E2D3D` 중 대비가 높은 쪽(red·blue·navy는 흰색), 모두 4.5:1 이상. cream·lime은
+    흰 패널 위 경계가 보이지 않아 `1px #E2E6EC` 테두리를 둔다.
 - **상태·메시지에 따라 내용 길이가 바뀌는 컴포넌트는 루트에 너비를 지정한다**
   (`width` + `max-width`). 지정하지 않으면 flex 컨테이너(`.stage`, 사용자 페이지의
   flex·grid) 안에서 내용 길이만큼 줄어 펼침·메시지 변경 때 폭이 흔들린다. 예:
@@ -100,11 +107,10 @@ const components = [
   Döner·Bento·Sidebar·Tab Bar·Notification Center·Feed·Comment·Card·Search):
   패널 흰 배경 + `1px #E2E6EC` + radius 8px(떠 있는 패널만 중성 그림자 1단계),
   항목 13px `#1E2D3D`(메뉴 항목 radius 6px), hover `#F6F7F9`, 선택·현재·펼침은
-  배경 `#E8F5F0` + 글자 `#456A5E` + 600, 메타(시간 등) 12px `#5F6E7E`, 섹션
-  라벨 11px 600 `#5F6E7E`, 위험 항목 `#DC2626`, 포커스
-  `outline: 2px solid #629584`. 카테고리 칩은 chip-sm(20px·10px·600·radius 4px)에
-  COLOR.json의 어두운 글자 프리셋(periwinkle·mint·rose·sky·lime 등, 대비
-  6.8~9.3)만 쓴다. `#8A96A4`는 대비 3.01이라 글자에 쓰지 않고 아이콘·구분선에만
+  배경 `#E5EAF3` + 글자 `#192275` + 600, 메타(시간 등) 12px `#5F6E7E`, 섹션
+  라벨 11px 600 `#5F6E7E`, 위험 항목 `#D5001A`, 포커스
+  `outline: 2px solid #25539B`. 카테고리 칩은 chip-sm(20px·10px·600·radius 4px)에
+  팔레트 칩 색을 쓴다(위 라벨 칩 규칙). `#8A96A4`는 대비 3.01이라 글자에 쓰지 않고 아이콘·구분선에만
   쓴다.
 - **화면 패턴(`cat: 'pattern'`)**: 기존 컴포넌트를 조합한 화면 단위 예제. #45 소셜
   로그인, #46 회원가입 폼. 입력값은 서버로 보내지 않고 `setTimeout` 1초로 요청을
@@ -113,7 +119,7 @@ const components = [
   name 속성을 돌려줘 입력 요소를 가린다.
 - **브랜드 색 예외**: 소셜 로그인 버튼만 각 사 가이드라인 색·로고를 쓴다(Kakao
   `#FEE500` + 85% 검정 글자, Naver `#03C75A` + 검정 글자·로고, Google 흰 배경 +
-  `#747775` 테두리 + 4색 G, Apple 검정). 그 밖의 요소는 sage 액센트 1색 규칙을 따른다.
+  `#747775` 테두리 + 4색 G, Apple 검정). 그 밖의 요소는 파랑 액센트 1색 규칙을 따른다.
   가이드라인 색이 AA(4.5:1)에 못 미치면 접근성을 우선한다 — Naver 흰 글자(2.25)를
   검정(9.32)으로 바꾼 것이 그 예다.
   로고 출처: simple-icons 16.35.0(Kakao 말풍선·Naver·Apple), devicon 2.17.0
