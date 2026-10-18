@@ -166,7 +166,7 @@ code{font-family:var(--mono); font-size:13px; line-height:1.7; color:#1E2D3D; wh
       <span class="brand__mark" aria-hidden="true">UI</span>
       <div>
         <strong>UI Kit Playground</strong>
-        <small>44 COMPONENTS · HTML/CSS/JS</small>
+        <small>46 COMPONENTS · HTML/CSS/JS</small>
       </div>
     </div>
 
@@ -183,7 +183,7 @@ code{font-family:var(--mono); font-size:13px; line-height:1.7; color:#1E2D3D; wh
     <p class="side-foot">
       32개 요소와 4가지 분류:
       <a href="https://careerfoundry.com/en/blog/ui-design/ui-element-glossary/" target="_blank" rel="noopener">CareerFoundry · 32 UI Elements</a>.
-      공통 레이어 12종은 이 사이트에서 추가했습니다.
+      공통 레이어 12종과 화면 패턴 2종은 이 사이트에서 추가했습니다.
     </p>
   </aside>
   <main class="main">
@@ -1562,13 +1562,13 @@ document.addEventListener('click', () => {
 .chip__rm:hover { background: rgba(0, 0, 0, .38); }
 
 /* COLOR.json 17색 (배경 / 글자) */
-.chip--frontend { --chip-bg: #2b7fff; --chip-fg: #FFFFFF; }
-.chip--backend { --chip-bg: #00c950; --chip-fg: #FFFFFF; }
-.chip--design { --chip-bg: #ad46ff; --chip-fg: #FFFFFF; }
-.chip--bug { --chip-bg: #fb2c36; --chip-fg: #FFFFFF; }
+.chip--frontend { --chip-bg: #2b7fff; --chip-fg: #001029; }
+.chip--backend { --chip-bg: #00c950; --chip-fg: #002910; }
+.chip--design { --chip-bg: #ad46ff; --chip-fg: #170029; }
+.chip--bug { --chip-bg: #fb2c36; --chip-fg: #280103; }
 .chip--docs { --chip-bg: #ffac6d; --chip-fg: #3D2200; }
 .chip--infra { --chip-bg: #615fff; --chip-fg: #FFFFFF; }
-.chip--magenta { --chip-bg: #ff29d3; --chip-fg: #FFFFFF; }
+.chip--magenta { --chip-bg: #ff29d3; --chip-fg: #290020; }
 .chip--plum { --chip-bg: #a0628c; --chip-fg: #FFFFFF; }
 .chip--sky { --chip-bg: #89d0f0; --chip-fg: #1A3D4D; }
 .chip--mint { --chip-bg: #71e4bf; --chip-fg: #0A3D2A; }
@@ -2405,6 +2405,420 @@ cmd.addEventListener('close', function () {
   document.querySelector('.cmd__result').textContent =
     cmd.returnValue === 'save' ? '저장하고 나갔습니다.' : '계속 편집합니다.';
 });`
+  },
+  {
+    id: "social-login", num: 45, name: "Social Login", nameKo: "소셜 로그인", cat: "pattern",
+    desc: "소셜 계정 버튼과 이메일 로그인 폼을 한 화면에 둔 로그인 화면. 버튼·입력 필드·체크박스·로더를 조합한다.",
+    usecase: "서비스 로그인 페이지 · 결제 전 로그인 요구 화면",
+    feature: "카카오·네이버·Google·Apple 브랜드 버튼 / 이메일 형식 검사 / 비밀번호 보기 토글 / 제출 중 로딩",
+    html: `<div class="slg">
+  <h3 class="slg__title">로그인</h3>
+  <p class="slg__sub">소셜 계정이나 이메일로 로그인합니다.</p>
+  <div class="slg__social">
+    <button type="button" class="slg__btn slg__btn--kakao" data-provider="Kakao"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="#000" d="M12 18.75c-.591 0-1.1697-.0413-1.7317-.1209-.5626.3965-3.813 2.6797-4.1198 2.7225 0 0-.1258.0489-.2328-.0141s-.0876-.2282-.0876-.2282c.0322-.2198.8426-3.0183.992-3.5333-2.7452-1.36-4.5701-3.7686-4.5701-6.5135C2.25 6.8168 6.6152 3.375 12 3.375s9.75 3.4418 9.75 7.6875c0 4.2457-4.3652 7.6875-9.75 7.6875z"/></svg><span>카카오로 계속하기</span></button>
+    <button type="button" class="slg__btn slg__btn--naver" data-provider="Naver"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="#000" d="M16.273 12.845 7.376 0H0v24h7.726V11.156L16.624 24H24V0h-7.727v12.845Z"/></svg><span>네이버로 계속하기</span></button>
+    <button type="button" class="slg__btn slg__btn--google" data-provider="Google"><svg width="18" height="18" viewBox="0 0 128 128" aria-hidden="true"><path fill="#e33629" d="M44.59 4.21a64 64 0 0142.61.37 61.22 61.22 0 0120.35 12.62c-2 2.14-4.11 4.14-6.15 6.22Q95.58 29.23 89.77 35a34.28 34.28 0 00-13.64-8 37.17 37.17 0 00-37.46 9.74 39.25 39.25 0 00-9.18 14.91L8.76 35.6A63.53 63.53 0 0144.59 4.21z"/><path fill="#f8bd00" d="M3.26 51.5a62.93 62.93 0 015.5-15.9l20.73 16.09a38.31 38.31 0 000 24.63q-10.36 8-20.73 16.08a63.33 63.33 0 01-5.5-40.9z"/><path fill="#587dbd" d="M65.27 52.15h59.52a74.33 74.33 0 01-1.61 33.58 57.44 57.44 0 01-16 26.26c-6.69-5.22-13.41-10.4-20.1-15.62a29.72 29.72 0 0012.66-19.54H65.27c-.01-8.22 0-16.45 0-24.68z"/><path fill="#319f43" d="M8.75 92.4q10.37-8 20.73-16.08A39.3 39.3 0 0044 95.74a37.16 37.16 0 0014.08 6.08 41.29 41.29 0 0015.1 0 36.16 36.16 0 0013.93-5.5c6.69 5.22 13.41 10.4 20.1 15.62a57.13 57.13 0 01-25.9 13.47 67.6 67.6 0 01-32.36-.35 63 63 0 01-23-11.59A63.73 63.73 0 018.75 92.4z"/></svg><span>Google로 계속하기</span></button>
+    <button type="button" class="slg__btn slg__btn--apple" data-provider="Apple"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span>Apple로 계속하기</span></button>
+  </div>
+  <div class="slg__divider"><span>또는 이메일로 로그인</span></div>
+  <form class="slg__form" novalidate>
+    <label class="slg__label" for="slg-email">이메일</label>
+    <input class="slg__input" id="slg-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" aria-describedby="slg-email-err">
+    <p class="slg__error" id="slg-email-err"></p>
+    <label class="slg__label" for="slg-pw">비밀번호</label>
+    <div class="slg__pw">
+      <input class="slg__input" id="slg-pw" name="password" type="password" autocomplete="current-password" aria-describedby="slg-pw-err">
+      <button type="button" class="slg__eye" aria-label="비밀번호 보기" aria-pressed="false" aria-controls="slg-pw"><svg class="i-show" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg><svg class="i-hide" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg></button>
+    </div>
+    <p class="slg__error" id="slg-pw-err"></p>
+    <div class="slg__row">
+      <label class="slg__keep"><input type="checkbox" name="keep"> 로그인 상태 유지</label>
+      <a href="#">비밀번호 찾기</a>
+    </div>
+    <button type="submit" class="slg__submit"><svg class="slg__spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg><span>로그인</span></button>
+    <p class="slg__status" role="status" aria-live="polite"></p>
+  </form>
+  <p class="slg__foot">계정이 없으신가요? <a href="#">회원가입</a></p>
+</div>`,
+    css: `/* 너비 고정: 오류 문구가 나타나도 폭이 바뀌지 않음 */
+.slg { width: 100%; max-width: 360px; padding: 24px; background: #fff; border: 1px solid #E2E6EC; border-radius: 8px; }
+.slg__title { margin: 0 0 4px; font-size: 18px; color: #1E2D3D; }
+.slg__sub { margin: 0 0 18px; font-size: 13px; color: #5F6E7E; }
+.slg__social { display: flex; flex-direction: column; gap: 8px; }
+
+/* 소셜 버튼: 색·로고는 각 사 로그인 버튼 가이드라인 값(액센트 1색 규칙의 예외) */
+.slg__btn {
+  position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 44px;
+  font-size: 14px; font-weight: 600; font-family: inherit; border: 1px solid transparent; border-radius: 8px; cursor: pointer;
+}
+.slg__btn svg { position: absolute; left: 16px; }
+.slg__btn--kakao { color: rgba(0, 0, 0, .85); background: #FEE500; }
+.slg__btn--naver { color: #000; background: #03C75A; } /* 흰 글자는 대비 2.25라 접근성 우선으로 검정(9.32) */
+.slg__btn--google { color: #1F1F1F; background: #fff; border-color: #747775; }
+.slg__btn--apple { color: #fff; background: #000; }
+.slg__btn:hover { filter: brightness(.96); }
+
+.slg__divider { display: flex; align-items: center; gap: 10px; margin: 20px 0 16px; font-size: 12px; color: #5F6E7E; }
+.slg__divider::before, .slg__divider::after { content: ""; flex: 1; height: 1px; background: #E2E6EC; }
+.slg__row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 13px; }
+.slg__keep { display: flex; align-items: center; gap: 6px; color: #4A5C6E; cursor: pointer; }
+.slg__keep input { margin: 0; accent-color: #527D6F; }
+.slg__status { min-height: 18px; margin: 10px 0 0; font-size: 12px; color: #456A5E; text-align: center; }
+.slg__foot { margin: 16px 0 0; font-size: 13px; color: #5F6E7E; text-align: center; }
+.slg__label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 600; color: #1E2D3D; }
+.slg__input {
+  width: 100%; padding: 9px 12px; font-size: 13px; color: #1E2D3D; font-family: inherit;
+  background: #fff; border: 1px solid #E2E6EC; border-radius: 8px;
+}
+.slg__input::placeholder { color: #8A96A4; }
+.slg__input:hover { border-color: #CDD3DC; }
+.slg__input:focus { outline: none; border-color: #629584; }
+.slg__input[aria-invalid="true"] { border-color: #DC2626; }
+.slg__error { min-height: 16px; margin: 4px 0 8px; font-size: 12px; color: #DC2626; }
+.slg__pw { position: relative; }
+.slg__pw .slg__input { padding-right: 40px; }
+.slg__eye {
+  position: absolute; top: 50%; right: 6px; display: flex; padding: 6px; margin-top: -14px;
+  color: #5F6E7E; background: none; border: 0; border-radius: 6px; cursor: pointer;
+}
+.slg__eye:hover { color: #1E2D3D; background: #F6F7F9; }
+.slg__eye .i-hide, .slg__eye[aria-pressed="true"] .i-show { display: none; }
+.slg__eye[aria-pressed="true"] .i-hide { display: block; }
+.slg__submit {
+  display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+  padding: 10px; font-size: 14px; font-weight: 600; color: #fff; font-family: inherit;
+  background: #527D6F; border: 0; border-radius: 8px; cursor: pointer; transition: background-color .15s;
+}
+.slg__submit:hover { background: #456A5E; }
+.slg__submit:disabled { cursor: progress; opacity: .7; }
+.slg__spin { display: none; animation: slg-spin .8s linear infinite; }
+.slg__submit[aria-busy="true"] .slg__spin { display: block; }
+@keyframes slg-spin { to { transform: rotate(360deg); } }
+.slg a { color: #456A5E; text-underline-offset: 2px; }
+.slg :is(button, a, input):focus-visible { outline: 2px solid #629584; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .slg__spin { animation-duration: 2.4s; } }`,
+    js: `var slg = document.querySelector('.slg');
+var slgForm = slg.querySelector('.slg__form');
+var slgStatus = slg.querySelector('.slg__status');
+var slgSubmit = slg.querySelector('.slg__submit');
+
+// 소셜 로그인: 실제 서비스에서는 서버가 만든 인가 URL로 이동한다(client_id·redirect_uri·state는 서버에서 발급).
+// 예) location.href = '/auth/kakao';  →  서버가 https://kauth.kakao.com/oauth/authorize?... 로 리다이렉트
+slg.querySelectorAll('.slg__btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    slgStatus.textContent = btn.dataset.provider + ' 인증 페이지로 이동합니다.';
+  });
+});
+
+// 비밀번호 보기 / 숨기기
+slg.querySelectorAll('.slg__eye').forEach(function (eye) {
+  eye.addEventListener('click', function () {
+    var input = document.getElementById(eye.getAttribute('aria-controls'));
+    var show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    eye.setAttribute('aria-pressed', String(show));
+    eye.setAttribute('aria-label', show ? '비밀번호 숨기기' : '비밀번호 보기');
+  });
+});
+
+function setError(input, msg) {
+  input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+  document.getElementById(input.getAttribute('aria-describedby')).textContent = msg;
+}
+
+slgForm.addEventListener('input', function (e) { if (e.target.matches('.slg__input')) setError(e.target, ''); });
+
+slgForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  var email = slgForm.email, pw = slgForm.password;
+  setError(email, /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email.value.trim()) ? '' : '올바른 이메일 주소를 입력하세요.');
+  setError(pw, pw.value ? '' : '비밀번호를 입력하세요.');
+  var invalid = slgForm.querySelector('[aria-invalid="true"]');
+  if (invalid) { invalid.focus(); return; }
+
+  // 데모: 서버 요청 대신 1초 지연. 입력값은 어디로도 보내지 않는다.
+  slgSubmit.disabled = true;
+  slgSubmit.setAttribute('aria-busy', 'true');
+  slgStatus.textContent = '';
+  setTimeout(function () {
+    slgSubmit.disabled = false;
+    slgSubmit.removeAttribute('aria-busy');
+    slgStatus.textContent = '로그인했습니다.';
+  }, 1000);
+});`
+  },
+  {
+    id: "signup-form", num: 46, name: "Sign-up Form", nameKo: "회원가입 폼", cat: "pattern",
+    desc: "이름·이메일·비밀번호·약관 동의를 한 화면에서 받는 가입 폼. 입력 필드·진행 바·체크박스·모달·인라인 알림·토스트를 조합한다.",
+    usecase: "서비스 회원가입 · 체험판 신청",
+    feature: "비밀번호 강도 4단계 / 비밀번호 확인 일치 / 약관 전체 동의(부분 선택 표시) / 약관 보기 모달 / 중복 이메일 오류 · 가입 완료 토스트",
+    html: `<div class="sgn">
+  <form class="sgn__form" novalidate>
+    <h3 class="sgn__title">회원가입</h3>
+    <div class="sgn__alert" role="alert" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg><span></span></div>
+    <label class="sgn__label" for="sgn-fullname">이름</label>
+    <input class="sgn__input" id="sgn-fullname" name="fullname" type="text" autocomplete="name" placeholder="홍길동" aria-describedby="sgn-fullname-err">
+    <p class="sgn__error" id="sgn-fullname-err"></p>
+    <label class="sgn__label" for="sgn-email">이메일</label>
+    <input class="sgn__input" id="sgn-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" aria-describedby="sgn-email-err">
+    <p class="sgn__error" id="sgn-email-err"></p>
+    <label class="sgn__label" for="sgn-pw">비밀번호</label>
+    <div class="sgn__pw">
+      <input class="sgn__input" id="sgn-pw" name="pw" type="password" autocomplete="new-password" aria-describedby="sgn-pw-rules sgn-pw-err">
+      <button type="button" class="sgn__eye" aria-label="비밀번호 보기" aria-pressed="false" aria-controls="sgn-pw"><svg class="i-show" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg><svg class="i-hide" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg></button>
+    </div>
+    <div class="sgn__meter" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <p class="sgn__strength">비밀번호 강도: <b>-</b></p>
+    <ul class="sgn__rules" id="sgn-pw-rules">
+      <li data-rule="len"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>8자 이상</li>
+      <li data-rule="alpha"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>영문 포함</li>
+      <li data-rule="num"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>숫자 포함</li>
+      <li data-rule="sym"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>특수문자 포함</li>
+    </ul>
+    <p class="sgn__error" id="sgn-pw-err"></p>
+    <label class="sgn__label" for="sgn-pw2">비밀번호 확인</label>
+    <input class="sgn__input" id="sgn-pw2" name="pw2" type="password" autocomplete="new-password" aria-describedby="sgn-pw2-err">
+    <p class="sgn__error" id="sgn-pw2-err"></p>
+    <fieldset class="sgn__terms">
+      <legend class="sgn__label">약관 동의</legend>
+      <label class="sgn__all"><input type="checkbox" class="sgn__check-all"> 전체 동의</label>
+      <div class="sgn__term">
+        <label><input type="checkbox" name="tos" data-required> [필수] 이용약관 동의</label>
+        <button type="button" class="sgn__view" data-term="tos">보기</button>
+      </div>
+      <div class="sgn__term">
+        <label><input type="checkbox" name="privacy" data-required> [필수] 개인정보 수집·이용 동의</label>
+        <button type="button" class="sgn__view" data-term="privacy">보기</button>
+      </div>
+      <div class="sgn__term">
+        <label><input type="checkbox" name="marketing"> [선택] 마케팅 정보 수신</label>
+        <button type="button" class="sgn__view" data-term="marketing">보기</button>
+      </div>
+      <p class="sgn__error" id="sgn-terms-err"></p>
+    </fieldset>
+    <button type="submit" class="sgn__submit"><svg class="sgn__spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg><span>가입하기</span></button>
+    <p class="sgn__hint">중복 이메일 오류를 보려면 taken@example.com 으로 가입해 보십시오.</p>
+  </form>
+  <dialog class="sgn__dialog" aria-labelledby="sgn-dialog-title">
+    <form method="dialog">
+      <h4 id="sgn-dialog-title" class="sgn__dialog-title"></h4>
+      <p class="sgn__dialog-body"></p>
+      <div class="sgn__dialog-actions">
+        <button value="close" class="sgn__dialog-close">닫기</button>
+        <button value="agree" class="sgn__dialog-agree">동의</button>
+      </div>
+    </form>
+  </dialog>
+  <div class="sgn__toast" role="status" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>가입이 완료되었습니다.</span></div>
+</div>`,
+    css: `/* 너비 고정: 오류·강도 문구가 바뀌어도 폭이 바뀌지 않음 */
+.sgn { width: 100%; max-width: 380px; }
+.sgn__form { padding: 24px; background: #fff; border: 1px solid #E2E6EC; border-radius: 8px; }
+.sgn__title { margin: 0 0 16px; font-size: 18px; color: #1E2D3D; }
+.sgn__alert { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; padding: 10px 12px; font-size: 13px; color: #991b1b; background: #FEE2E2; border: 1px solid #fecaca; border-radius: 6px; }
+.sgn__alert[hidden] { display: none; }
+
+/* 비밀번호 강도: 4칸 막대 + 조건 목록 */
+.sgn__meter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 8px; }
+.sgn__meter span { height: 4px; background: #E2E6EC; border-radius: 2px; transition: background-color .15s; }
+.sgn__meter[data-score="1"] span:nth-child(-n+1) { background: #DC2626; }
+.sgn__meter[data-score="2"] span:nth-child(-n+2) { background: #A16207; }
+.sgn__meter[data-score="3"] span:nth-child(-n+3),
+.sgn__meter[data-score="4"] span { background: #527D6F; }
+.sgn__strength { margin: 6px 0 4px; font-size: 12px; color: #5F6E7E; }
+.sgn__strength b { color: #1E2D3D; }
+.sgn__rules { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0; padding: 0; list-style: none; font-size: 12px; color: #5F6E7E; }
+.sgn__rules li { display: flex; align-items: center; gap: 4px; }
+.sgn__rules svg { color: #CDD3DC; }
+.sgn__rules li.is-ok { color: #456A5E; }
+.sgn__rules li.is-ok svg { color: #527D6F; }
+
+/* 약관 */
+.sgn__terms { margin: 0 0 16px; padding: 12px 14px 4px; border: 1px solid #E2E6EC; border-radius: 8px; }
+.sgn__terms legend { padding: 0 4px; margin: 0; }
+.sgn__terms label { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #1E2D3D; cursor: pointer; }
+.sgn__terms input { margin: 0; accent-color: #527D6F; }
+.sgn__all { padding-bottom: 10px; margin-bottom: 6px; font-weight: 600; border-bottom: 1px solid #E2E6EC; }
+.sgn__term { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
+.sgn__view { padding: 2px 6px; font-size: 12px; color: #456A5E; font-family: inherit; background: none; border: 0; border-radius: 4px; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.sgn__view:hover { background: #E8F5F0; }
+.sgn__hint { margin: 10px 0 0; font-size: 12px; color: #5F6E7E; text-align: center; }
+
+/* 약관 보기 모달 */
+.sgn__dialog { width: 320px; max-width: calc(100% - 32px); padding: 20px; color: #1E2D3D; background: #fff; border: 1px solid #E2E6EC; border-radius: 8px; }
+.sgn__dialog::backdrop { background: rgba(30, 45, 61, .4); }
+.sgn__dialog form { margin: 0; }
+.sgn__dialog-title { margin: 0 0 8px; font-size: 15px; }
+.sgn__dialog-body { margin: 0 0 16px; font-size: 13px; line-height: 1.6; color: #4A5C6E; }
+.sgn__dialog-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.sgn__dialog-actions button { padding: 7px 14px; font-size: 13px; font-family: inherit; border-radius: 6px; cursor: pointer; }
+.sgn__dialog-close { color: #1E2D3D; background: #fff; border: 1px solid #E2E6EC; }
+.sgn__dialog-agree { color: #fff; background: #527D6F; border: 1px solid #527D6F; }
+
+/* 가입 완료 토스트 */
+.sgn__toast { position: fixed; top: 16px; right: 16px; z-index: 1000; display: flex; align-items: center; gap: 8px; width: 300px; max-width: calc(100vw - 32px); padding: 11px 14px; font-size: 14px; color: #166534; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; box-shadow: 0 1px 2px rgba(0, 0, 0, .06); }
+.sgn__toast[hidden] { display: none; }
+.sgn__label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 600; color: #1E2D3D; }
+.sgn__input {
+  width: 100%; padding: 9px 12px; font-size: 13px; color: #1E2D3D; font-family: inherit;
+  background: #fff; border: 1px solid #E2E6EC; border-radius: 8px;
+}
+.sgn__input::placeholder { color: #8A96A4; }
+.sgn__input:hover { border-color: #CDD3DC; }
+.sgn__input:focus { outline: none; border-color: #629584; }
+.sgn__input[aria-invalid="true"] { border-color: #DC2626; }
+.sgn__error { min-height: 16px; margin: 4px 0 8px; font-size: 12px; color: #DC2626; }
+.sgn__pw { position: relative; }
+.sgn__pw .sgn__input { padding-right: 40px; }
+.sgn__eye {
+  position: absolute; top: 50%; right: 6px; display: flex; padding: 6px; margin-top: -14px;
+  color: #5F6E7E; background: none; border: 0; border-radius: 6px; cursor: pointer;
+}
+.sgn__eye:hover { color: #1E2D3D; background: #F6F7F9; }
+.sgn__eye .i-hide, .sgn__eye[aria-pressed="true"] .i-show { display: none; }
+.sgn__eye[aria-pressed="true"] .i-hide { display: block; }
+.sgn__submit {
+  display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+  padding: 10px; font-size: 14px; font-weight: 600; color: #fff; font-family: inherit;
+  background: #527D6F; border: 0; border-radius: 8px; cursor: pointer; transition: background-color .15s;
+}
+.sgn__submit:hover { background: #456A5E; }
+.sgn__submit:disabled { cursor: progress; opacity: .7; }
+.sgn__spin { display: none; animation: sgn-spin .8s linear infinite; }
+.sgn__submit[aria-busy="true"] .sgn__spin { display: block; }
+@keyframes sgn-spin { to { transform: rotate(360deg); } }
+.sgn a { color: #456A5E; text-underline-offset: 2px; }
+.sgn :is(button, a, input):focus-visible { outline: 2px solid #629584; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .sgn__spin { animation-duration: 2.4s; } }`,
+    js: `var sgn = document.querySelector('.sgn');
+var sgnForm = sgn.querySelector('.sgn__form');
+var sgnAlert = sgn.querySelector('.sgn__alert');
+var sgnToast = sgn.querySelector('.sgn__toast');
+var sgnSubmit = sgn.querySelector('.sgn__submit');
+var sgnDialog = sgn.querySelector('.sgn__dialog');
+var sgnMeter = sgn.querySelector('.sgn__meter');
+var checkAll = sgn.querySelector('.sgn__check-all');
+var termBoxes = sgn.querySelectorAll('.sgn__term input');
+
+var RULES = {
+  len: function (v) { return v.length >= 8; },
+  alpha: function (v) { return /[A-Za-z]/.test(v); },
+  num: function (v) { return /\\d/.test(v); },
+  sym: function (v) { return /[^A-Za-z0-9]/.test(v); }
+};
+var LEVELS = ['-', '약함', '보통', '강함', '매우 강함'];
+var TERMS = {
+  tos: { title: '이용약관', body: '서비스 이용 조건과 회원의 권리·의무를 정합니다. 실제 서비스의 약관 본문으로 바꿔 넣으십시오.' },
+  privacy: { title: '개인정보 수집·이용', body: '수집 항목: 이름, 이메일. 이용 목적: 회원 식별과 서비스 안내. 보유 기간: 탈퇴 시까지.' },
+  marketing: { title: '마케팅 정보 수신', body: '이벤트·혜택 안내를 이메일로 보냅니다. 동의하지 않아도 가입할 수 있습니다.' }
+};
+
+function setError(id, msg) {
+  var err = document.getElementById(id + '-err');
+  if (err) err.textContent = msg;
+  var input = document.getElementById(id);
+  if (input) input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+}
+
+function passwordScore(v) {
+  var score = 0;
+  sgn.querySelectorAll('.sgn__rules li').forEach(function (li) {
+    var ok = RULES[li.dataset.rule](v);
+    li.classList.toggle('is-ok', ok);
+    if (ok) score++;
+  });
+  return v ? score : 0;
+}
+
+sgnForm.pw.addEventListener('input', function () {
+  var score = passwordScore(sgnForm.pw.value);
+  sgnMeter.dataset.score = score;
+  sgn.querySelector('.sgn__strength b').textContent = LEVELS[score];
+});
+
+// 입력하면 그 필드의 오류를 지운다
+sgnForm.addEventListener('input', function (e) {
+  if (e.target.id) setError(e.target.id, '');
+  sgnAlert.hidden = true;
+});
+
+// 비밀번호 보기 / 숨기기
+sgn.querySelectorAll('.sgn__eye').forEach(function (eye) {
+  eye.addEventListener('click', function () {
+    var input = document.getElementById(eye.getAttribute('aria-controls'));
+    var show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    eye.setAttribute('aria-pressed', String(show));
+    eye.setAttribute('aria-label', show ? '비밀번호 숨기기' : '비밀번호 보기');
+  });
+});
+
+// 약관: 전체 동의 ↔ 개별 항목 (일부만 선택되면 indeterminate)
+function syncAll() {
+  var n = [].filter.call(termBoxes, function (b) { return b.checked; }).length;
+  checkAll.checked = n === termBoxes.length;
+  checkAll.indeterminate = n > 0 && n < termBoxes.length;
+  if (n) setError('sgn-terms', '');
+}
+checkAll.addEventListener('change', function () {
+  termBoxes.forEach(function (b) { b.checked = checkAll.checked; });
+  syncAll();
+});
+termBoxes.forEach(function (b) { b.addEventListener('change', syncAll); });
+
+// 약관 보기 → 모달에서 "동의"를 누르면 해당 항목 체크
+var openTerm = null;
+sgn.querySelectorAll('.sgn__view').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    openTerm = btn.dataset.term;
+    sgnDialog.querySelector('.sgn__dialog-title').textContent = TERMS[openTerm].title;
+    sgnDialog.querySelector('.sgn__dialog-body').textContent = TERMS[openTerm].body;
+    sgnDialog.returnValue = '';
+    sgnDialog.showModal();
+  });
+});
+sgnDialog.addEventListener('close', function () {
+  if (sgnDialog.returnValue === 'agree') {
+    sgnForm.elements[openTerm].checked = true;
+    syncAll();
+  }
+});
+
+sgnForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  var f = sgnForm;
+  setError('sgn-fullname', f.fullname.value.trim() ? '' : '이름을 입력하세요.');
+  setError('sgn-email', /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(f.email.value.trim()) ? '' : '올바른 이메일 주소를 입력하세요.');
+  setError('sgn-pw', passwordScore(f.pw.value) === 4 ? '' : '비밀번호 조건 4개를 모두 만족해야 합니다.');
+  setError('sgn-pw2', f.pw2.value && f.pw2.value === f.pw.value ? '' : '비밀번호가 일치하지 않습니다.');
+  var missing = [].some.call(sgn.querySelectorAll('[data-required]'), function (b) { return !b.checked; });
+  document.getElementById('sgn-terms-err').textContent = missing ? '필수 약관에 동의해야 합니다.' : '';
+
+  var invalid = f.querySelector('[aria-invalid="true"]');
+  if (invalid || missing) { (invalid || checkAll).focus(); return; }
+
+  // 데모: 서버 요청 대신 1초 지연. 입력값은 어디로도 보내지 않는다.
+  sgnSubmit.disabled = true;
+  sgnSubmit.setAttribute('aria-busy', 'true');
+  setTimeout(function () {
+    sgnSubmit.disabled = false;
+    sgnSubmit.removeAttribute('aria-busy');
+    if (f.email.value.trim().toLowerCase() === 'taken@example.com') {
+      sgnAlert.querySelector('span').textContent = '이미 가입된 이메일입니다. 로그인하거나 다른 이메일을 사용하십시오.';
+      sgnAlert.hidden = false;
+      setError('sgn-email', ' ');
+      f.email.focus();
+      return;
+    }
+    f.reset();
+    sgnMeter.dataset.score = 0;
+    passwordScore('');
+    sgn.querySelector('.sgn__strength b').textContent = LEVELS[0];
+    syncAll();
+    sgnToast.hidden = false;
+    setTimeout(function () { sgnToast.hidden = true; }, 3000);
+  }, 1000);
+});`
   }
 ];
 
@@ -2413,12 +2827,14 @@ var CATS = {
   nav:       { label:"내비게이션", short:"탐색", desc:"Navigational", icon:"compass" },
   info:      { label:"정보 표시", short:"정보", desc:"Informational", icon:"info" },
   container: { label:"컨테이너", short:"컨테이너", desc:"Containers", icon:"box" },
-  layer:     { label:"공통 레이어", short:"레이어", desc:"Overlays", icon:"layers" }
+  layer:     { label:"공통 레이어", short:"레이어", desc:"Overlays", icon:"layers" },
+  pattern:   { label:"화면 패턴", short:"패턴", desc:"Patterns", icon:"layout-template" }
 };
-var CAT_ORDER = ["input","nav","info","container","layer"];
+var CAT_ORDER = ["input","nav","info","container","layer","pattern"];
 
 // 셸 아이콘: lucide-static@0.460.0 path를 인라인으로 둔다(외부 JS 없음)
 var ICON_PATHS = {
+  'layout-template': '<rect width="18" height="7" x="3" y="3" rx="1"/><rect width="9" height="7" x="3" y="14" rx="1"/><rect width="5" height="7" x="16" y="14" rx="1"/>',
   'search': '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
   'copy': '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
   'check': '<path d="M20 6 9 17l-5-5"/>',
