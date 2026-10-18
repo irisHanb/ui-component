@@ -1,102 +1,163 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with
+code in this repository.
 
-> 이 저장소의 작업 지침과 UI 문구는 한국어로 씁니다. 코드 식별자와 기술 용어는 원문 그대로 둡니다.
+> 이 저장소의 작업 지침은 한글로 작성한다. 코드 식별자·기술 용어는 원문 그대로
+> 둔다.
 
 ## 프로젝트 개요
 
-CareerFoundry [32 UI Elements 글로서리](https://careerfoundry.com/en/blog/ui-design/ui-element-glossary/)를 기반으로 한 프런트엔드 UI 컴포넌트 레퍼런스 / 플레이그라운드입니다. 사용자는 각 컴포넌트의 코드를 복사해 자기 사이트에 붙여 넣습니다.
+CareerFoundry의
+[32 UI Elements 글로서리](https://careerfoundry.com/en/blog/ui-design/ui-element-glossary/)를
+기반으로 한 **프런트엔드 UI 컴포넌트 레퍼런스 / 플레이그라운드**다. 최종
+산출물은 의존성 없이 브라우저에서 바로 열리는 **단일 self-contained HTML
+페이지**다.
 
-- **최종 산출물**: 저장소 루트의 `ui-kit-playground.html`. 빌드 없이 브라우저에서 바로 열리는 단일 self-contained HTML입니다(아직 없음).
-- **좌측 사이드바**: 32개 UI 요소(카테고리별 그룹) + 공통 레이어 컴포넌트 그룹(모달·확인·경고·알림·토스트·스낵바·바텀 시트 등)
-- **우측 메인**: 클릭한 항목의 이름 + 정의·설명 → Preview / HTML / CSS / JS 탭
-- **코드 탭**: 구문 하이라이트, 탭마다 복사 버튼. JS가 없는 컴포넌트는 "필요 없음"을 표시합니다.
+목표 UX(요구 사항):
 
-`docs/resource/`는 빌드 결과가 아니라 참고 자료입니다. 새 코드는 이 폴더 밖에 작성합니다.
+- **좌측**: UI 요소 리스트 + UX 공통 오버레이
+  컴포넌트(모달·확인·경고·알림·토스트·스낵바·바텀 시트 등 레이어 처리 요소)
+- **우측 메인**: 좌측에서 클릭한 항목의 **이름 + 정의/설명**, 그 아래 **Preview
+  / HTML / CSS / JS** 탭
+- 각 코드 영역에 **구문 하이라이트**와 **복사 버튼**(붙여넣어 바로 동작하는
+  코드)
+
+정본 빌드 타깃 파일명은 `ui-kit-playground.html`이다(저장소 루트에 생성).
+`docs/resource/`의 파일들은 빌드 결과가 아니라 **참고용 레퍼런스**다.
 
 ## 실행 / 미리보기
 
-빌드 도구, 패키지 매니저, 린터, 테스트가 없습니다. 순수 HTML/CSS/vanilla JS입니다.
+빌드·번들·패키지 매니저가 **없다**(`package.json`·`node_modules`·테스트·린트
+없음). 순수 HTML/CSS/vanilla JS다.
 
 ```bash
-# Clipboard API는 보안 컨텍스트가 필요하므로 file:// 대신 localhost에서 확인
+# 정적 서버로 미리보기 (clipboard API 등은 file:// 보다 http:// 에서 안정적)
 python3 -m http.server 8000
 # → http://localhost:8000/ui-kit-playground.html
 
-# 참고 파일을 바로 열기
-open docs/resource/component-portfolio.html
-
-# 이 폴더 세션에서 사용자가 입력한 프롬프트만 추출 (python3 필요)
-./extract-my-prompts.sh                     # 최신 세션 1개 → my-prompts.md (덮어쓰기)
-./extract-my-prompts.sh --append -o Prompt.md   # 전 세션, 새 프롬프트만 이어붙임
-./extract-my-prompts.sh --help
+# 또는 단일 파일을 바로 브라우저로 열기
+open docs/resource/ui-components-32-catalog.html
 ```
 
-## 아키텍처 — 데이터 모델
+## 아키텍처 — 핵심 데이터 모델
 
-시작점은 `docs/resource/component-portfolio.html`입니다. 요구 사양(카테고리 그룹 사이드바 + 우측 메인 + 4개 탭 + 복사)과 가장 가깝습니다. 이 파일의 구조를 가져오고, 데이터 필드는 `ui-components-32-catalog.html`의 `usecase`·`feature`를 더해 확장합니다.
+정본 참고 구조는
+[docs/resource/ui-components-32-catalog.html](docs/resource/ui-components-32-catalog.html)다.
+모든 컴포넌트를 **하나의 데이터 배열**로 정의하고 JS가 카드/패널로 렌더링하는
+data-driven 방식이며, 새 빌드도 이 모델을 따른다:
 
 ```js
-const COMPONENTS = [
-  { n, name, ko, cat,   // cat: 'input' | 'nav' | 'info' | 'container' | 'layer'
-    desc,               // 정의·설명 (우측 메인 상단)
-    usecase,            // 사용 사례
-    feature,            // 핵심 기능 요약
-    html, css, js },    // 미리보기와 코드 탭이 같은 문자열을 씀
+const components = [
+  {
+    id,
+    num,
+    name,
+    nameKo,
+    cat, // cat: 'input' | 'nav' | 'info' | 'container'
+    desc, // 정의·설명 (우측 메인 상단)
+    usecase, // 사용 사례
+    feature, // 핵심 기능 요약
+    html,
+    css,
+    js,
+  }, // 탭에 그대로 들어가는 소스 문자열
 ];
 ```
 
-- **데이터와 렌더러를 분리합니다.** `select(n)`이 상세 화면·탭·복사 버튼을 다시 그립니다(`component-portfolio.html:1001`). 미리보기와 코드 탭이 같은 문자열을 쓰므로 복사한 코드와 보이는 동작이 일치합니다.
-- **미리보기는 iframe으로 격리합니다.** `buildSrcdoc()`이 `css`·`html`·`js`를 한 문서로 합쳐 `iframe.srcdoc` 프로퍼티에 할당합니다(`component-portfolio.html:978-1030`). 레이어 컴포넌트의 `position: fixed`도 iframe 안에서만 덮습니다.
-- **복사한 코드는 단독으로 동작해야 합니다.** CSS는 컴포넌트마다 고유 접두어를 붙인 시맨틱 클래스로 씁니다(`.acc__`, `.car__` 등). JS는 외부 라이브러리 없이 vanilla로 씁니다. Tailwind 유틸리티나 셸의 CSS 변수에 의존하지 않습니다.
-- **복사 버튼**: `navigator.clipboard.writeText()`로 복사하고 "복사됨 ✓"을 1.2초 표시합니다. 실패하면 코드 영역을 `Range`로 선택하고 "선택됨 · Ctrl+C"를 표시합니다(`ui-elements-demo.html:3860-3868`).
-- **하이라이트**: 산출물은 self-contained이므로 Prism 같은 외부 JS를 쓰지 않고 HTML/CSS/JS용 정규식 하이라이터를 인라인으로 둡니다. 토큰 분류는 `ui-elements-demo.html`의 Prism 토큰 색(`:340`)을 참고합니다.
-- **JS 문자열 작성 시 주의**
-  - 템플릿 리터럴 안의 `</script>`는 `<\/script>`로 씁니다.
-  - 컴포넌트 코드 안의 백틱과 `${`는 escape합니다.
-  - 코드 탭에 넣기 전에 `&`, `<`, `>`를 escape한 뒤 하이라이트합니다.
+설계 원칙:
 
-## 컴포넌트 범위
+- **CSS는 self-contained 시맨틱 클래스**(`.accordion`, `.btn`, `.modal-box` …)로
+  작성한다. 학습자가 탭의 코드를 복사해 다른 페이지에 붙이면 그대로 동작하는
+  이식성이 목적이다. Tailwind 유틸리티 클래스 의존(아래 `ui-component.html`
+  방식)은 **지양**한다 — 복사·이식성이 떨어진다.
+- 탭 전환은 패널의 `display` 토글, 복사 버튼은 해당 컴포넌트의 소스 문자열을
+  `navigator.clipboard.writeText()`로 복사하고 "복사됨" 상태를 잠깐 표시한다.
+- 카테고리 분류 4종: **Input Controls / Navigational / Informational /
+  Containers**.
+- **미리보기에 iframe을 쓰지 않는다**(아래 `component-portfolio.html`의 iframe
+  `srcdoc` 방식은 따르지 않음). 페이지 안 `.stage`에 직접 그리고,
+  `runPreview()`가 컴포넌트 JS를 `new Function`으로 실행하면서
+  `document`·`setTimeout`·`setInterval`을 감싸 조회 범위를 `.stage`로 좁히고
+  리스너·타이머를 컴포넌트 전환 시 해제한다. `.stage`의 `contain: layout`이
+  `position: fixed` 요소를 영역 안에 가둔다. `<dialog>`의 `showModal()`은
+  미리보기에서만 `openInStage()`로 바꿔 끼워 `.stage` 안에 띄운다(배경·바깥
+  클릭·Esc·`inert`를 흉내 냄). 복사용 코드는 그대로 `showModal()`을 쓴다.
+- **디자인 토큰은 `label-chip-system.html` 기준**이다(아래 portfolio의 `#2563EB`가
+  아님). 액센트 1색은 sage — 글자·채움 `#527D6F`(흰 글자 대비 4.64), hover·연한
+  배경 위 글자 `#456A5E`, 테두리·선택 막대 `#629584`, 연한 배경 `#E8F5F0`. 텍스트
+  `#1E2D3D`/`#4A5C6E`/`#5F6E7E`, 테두리 `#E2E6EC`/`#CDD3DC`, 페이지 `#F0F2F5`.
+  제목 Plus Jakarta Sans. 칩은 sm 20 / md 24 / lg 28px, 라벨 색은 COLOR.json 17색.
+- **상태·메시지에 따라 내용 길이가 바뀌는 컴포넌트는 루트에 너비를 지정한다**
+  (`width` + `max-width`). 지정하지 않으면 flex 컨테이너(`.stage`, 사용자 페이지의
+  flex·grid) 안에서 내용 길이만큼 줄어 펼침·메시지 변경 때 폭이 흔들린다. 예:
+  Accordion `width:100%; max-width:360px`, Toast `300px`, Snackbar `320px`. 메시지
+  칸은 `flex:1`로 남는 폭을 채워 닫기·실행 취소 버튼을 오른쪽 끝에 고정한다.
+- **목록형 컴포넌트 공통 규칙**(Accordion·Dropdown·Kebab·Meatballs·Hamburger·
+  Döner·Bento·Sidebar·Tab Bar·Notification Center·Feed·Comment·Card·Search):
+  패널 흰 배경 + `1px #E2E6EC` + radius 8px(떠 있는 패널만 중성 그림자 1단계),
+  항목 13px `#1E2D3D`(메뉴 항목 radius 6px), hover `#F6F7F9`, 선택·현재·펼침은
+  배경 `#E8F5F0` + 글자 `#456A5E` + 600, 메타(시간 등) 12px `#5F6E7E`, 섹션
+  라벨 11px 600 `#5F6E7E`, 위험 항목 `#DC2626`, 포커스
+  `outline: 2px solid #629584`. 카테고리 칩은 chip-sm(20px·10px·600·radius 4px)에
+  COLOR.json의 어두운 글자 프리셋(periwinkle·mint·rose·sky·lime 등, 대비
+  6.8~9.3)만 쓴다. `#8A96A4`는 대비 3.01이라 글자에 쓰지 않고 아이콘·구분선에만
+  쓴다.
 
-- **32개 요소**: `ui-components-32-catalog.html`과 `component-portfolio.html`에 카테고리와 함께 정의돼 있습니다. 카테고리는 Input Controls / Navigational / Informational / Containers 4종입니다.
-- **공통 레이어(`cat: 'layer'`)**: 요구 항목은 Alert, Confirm, Notification, Toast, Snackbar, Bottom Sheet입니다. 동작 패턴은 `alert-ui-showcase.html`의 `demos` 객체(`render`/`fire`/`code`)를 참고합니다. 해당 파일에는 Top Banner, Inline Alert, Slide-over, Popover, Full-screen Takeover, Command Bar, Notification List 패턴도 있습니다.
+레이아웃 패러다임은 두 가지 레퍼런스가 다른데, **요구되는 형태는 사이드바 + 단일
+메인 영역**(좌측 리스트 클릭 → 우측 메인 재렌더)이다. 즉 **카탈로그의 깔끔한
+데이터 모델 + 사이드바 레이아웃**을 결합한다.
+
+## 32개 컴포넌트 + 공통 오버레이 범위
+
+`docs/resource/ui-components-32-catalog.html`에 32종이 카테고리와 함께 모두
+정의돼 있다(Accordion·Button·Card·Modal·Dropdown·Toggle … cat:
+input/nav/info/container). 좌측 리스트에는 이 32종에 더해
+`alert-ui-showcase.html`의 **오버레이/알림 패턴**(Toast/Snackbar·Top
+Banner·Inline Alert·Slide-over·Popover·Full-screen Takeover·Command
+Bar·Notification List 등)을 공통 컴포넌트로 추가한다.
 
 ## 리소스 파일별 역할 (`docs/resource/`)
 
-| 파일 | 가져올 것 |
-|---|---|
-| `component-portfolio.html` | **시작점.** 레이아웃, `ELEMENTS` 데이터, `select()`·`buildSrcdoc()`·탭·복사 로직. Noto Sans KR(본문) / JetBrains Mono(코드), 무채색 + `#2563EB` 액센트 1색입니다. 디자인 규칙 위반 3건은 아래 디자인 절에 정리했습니다. |
-| `ui-components-32-catalog.html` | 32종 정의의 `usecase`·`feature` 문구, 날짜 피커·폼 검증 같은 인터랙티브 데모. `linear-gradient` 16곳이 디자인 규칙을 위반하므로 비주얼은 다시 작성합니다. |
-| `ui-elements-demo.html` | 클립보드 fallback, `location.hash` 라우팅, 375px 좁은 화면 미리보기, 접근성 설명(`a11y` 필드) |
-| `alert-ui-showcase.html` | 레이어/알림 동작 패턴. 그라데이션·글로우·`backdrop-filter`를 쓰므로 비주얼은 가져오지 않습니다. |
-| `ui-component.html` | Tailwind CDN + Lucide + `script: () => {}` 방식이고, 미리보기를 본문에 `innerHTML`로 넣어 ID·CSS가 충돌합니다. 따라 하지 않을 방식의 예입니다. |
-| `label-chip-system.html` | 라벨/칩 17색 팔레트, 크기·상태, 우선순위 배지, 토큰 정의 방식 |
-| `colorpicker.html`, `color-personal-card.html` | 색상 선택 UI 보조 데모 |
+| 파일                                                                    | 무엇을 취할지                                                                                                                                                                        |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ui-components-32-catalog.html`                                         | **정본 데이터 모델·코드·분류.** 32종 정의와 self-contained CSS의 출처.                                                                                                               |
+| `ui-component-demo.html`                                                | 사이드바+메인 레이아웃 아이디어. 단 **Tailwind CDN + Lucide 아이콘 + `script:()=>{}` 패턴**이라 코드 이식성은 떨어짐 — 구조만 참고.                                                  |
+| `alert-ui-showcase.html`                                                | 오버레이/알림 **동작 패턴**의 출처(`demos` 객체: render/fire/code). ⚠️ 시각 스타일은 그라데이션·글로우·backdrop-blur를 써서 아래 디자인 규칙을 **위반**하므로 비주얼은 베끼지 말 것. |
+| `label-chip-system.html`                                                | 라벨/칩 시스템 — 17색 팔레트, 크기·상태, 우선순위 배지/Select, COLOR.json 토큰.                                                                                                      |
+| `colorpicker.html`, `color-personal-card.html`, `ui-elements-demo.html` | 보조 데모.                                                                                                                                                                           |
+| `component-portfolio.html`                                              | **요구 사양에 가장 근접한 정본 prototype.** 32종 데이터 모델(`ELEMENTS =                                                                                                             |
 
-## 디자인 규칙 — anti-ai-slop (강제)
+[{n,name,ko,cat,desc,html,css,js},…]`)을 카테고리 그룹 사이드바 + 우측 메인(이름·한글명·뱃지·설명 +   Preview/HTML/CSS/JS 탭)으로 렌더한다. 미리보기는 iframe `srcdoc`으로 컴포넌트 CSS를 페이지와 격리하고, 복사   버튼은 `navigator.clipboard.writeText()`+ "복사됨 ✓" 토스트로 동작한다. 폰트는 Noto Sans KR(본문) /   JetBrains Mono(코드), 무채색 +`#2563EB`
+단일 액센트로 anti-ai-slop 규칙을 준수한다.
 
-[.claude/rules/anti-ai-slop.md](.claude/rules/anti-ai-slop.md)가 모든 HTML·SVG 생성에 적용됩니다. 금지·강제 항목과 출력 전 자가 점검 체크리스트는 그 파일에 있습니다. 이 프로젝트에서 규칙을 적용할 때 걸리는 지점은 다음과 같습니다.
+**`ui-kit-playground.html` 빌드는 이 파일의 구조·코드를 시작점으로 삼고, 좌측
+리스트에 오버레이/알림 패턴만 추가한다.** |
 
-- **카탈로그 셸과 복사용 컴포넌트 코드 모두**에 적용합니다. 사용자가 복사해 가는 `css` 문자열도 규칙을 통과해야 합니다.
-- **`transition`은 색·투명도 같은 기능적 상태에만, 150ms 이하로 씁니다.** 레이어 컴포넌트(토스트·스낵바·바텀 시트·모달)의 표시·숨김도 슬라이드나 scale 없이 opacity 150ms 이하로 처리합니다.
-- **시작점 파일도 위반이 있습니다.** `component-portfolio.html`에서 옮길 때 다음을 고칩니다.
+## 강제 디자인 규칙 — anti-ai-slop
 
-| 위치 | 위반 | 처리 |
-|---|---|---|
-| `:589-590` `.ldr__line` | `pulse` 키프레임 | 정적 회색 블록으로 바꿈 |
-| `:288` `.car__track`, `:734` `.prog__fill` | transition 200ms | 150ms 이하로 줄임 |
-| `:925` `.tgl__sw` | `border-radius: 13px` | 8px 이하로 줄임 |
+[.claude/rules/anti-ai-slop.md](.claude/rules/anti-ai-slop.md)는 이 저장소의
+모든 이미지·HTML·SVG·슬라이드 생성에 적용되는 **강제 규칙**이며 기본 동작을
+override한다. 요지:
+
+- **금지**: 그라데이션 일체, 색 들어간 그림자·글로우·`blur≥20px`,
+  backdrop-filter 글래스모피즘, hover/load 시 transform·fade·키프레임 장식 모션,
+  배경 워터마크/그리드/광선, 카드 상단 컬러 액센트 바, 이모지 불릿, 마케팅
+  상투어.
+- **강제**: 무채색 베이스 + 액센트 1색(색은 의미에만), 그림자는 중성 회색
+  1단계(`0 1px 2px rgba(0,0,0,.06)`)만, 구획은 `1px solid border`+여백으로,
+  `border-radius` 0~8px, 위계는 크기·굵기·여백·정렬로, 폰트는
+  기본값(Inter/Roboto/Arial/system) 수렴 금지하고 목적에 맞게 의도적으로 고르고
+  이유를 한 줄 밝힘.
+
+**주의**: `alert-ui-showcase.html`과 카탈로그 일부(헤더 숫자·카드 이미지의
+`linear-gradient`)는 이 규칙 이전 자료라 위반 요소가 있다. 동작·구조는 참고하되
+**비주얼은 규칙에 맞게 다시 작성**한다. 출력 전 `anti-ai-slop.md`의 자가 점검
+체크리스트(그라데이션/컬러 그림자/장식 모션/배경 장식 등)를 통과시킨다.
 
 ## 프롬프트 기록 훅
 
-`.claude/settings.local.json`의 **Stop 훅**이 응답이 끝날 때마다 `extract-my-prompts.sh`를 실행합니다. 이 스크립트는 `~/.claude/projects/` 아래 세션 jsonl에서 `cwd`가 일치하는 세션을 찾아, 사용자가 입력한 텍스트만 Markdown으로 저장합니다. 도구 출력과 시스템 주입 메시지는 제외합니다.
-
-- `settings.local.json`은 머신 전용이라 `.gitignore`에 들어 있습니다. 훅 command가 절대경로이므로 다른 머신에서는 경로를 고쳐야 합니다.
-- 현재 훅은 스크립트를 인자 없이 호출합니다. 그래서 `statusMessage`("Prompt.md 기록 갱신 중")와 달리 `$PWD/my-prompts.md`에 최신 세션만 덮어씁니다.
-- `Prompt.md` 이어붙이기가 목적이면 command에 `--append -o Prompt.md`를 붙여야 합니다. `--append`는 `Prompt.md.state` 파일에 마지막 기록 시각을 저장하고, 그 이후 프롬프트만 추가합니다.
-- `my-prompts.md`, `Prompt.md`, `Prompt.md.state`는 스크립트가 생성하는 파일입니다. 직접 편집하지 않습니다.
-
-## 접근성
-
-토글형 버튼은 `aria-expanded`, 스위치는 `role="switch"` + `aria-checked`, 모달·확인 창은 `role="dialog"` + `aria-modal="true"`, 토스트·스낵바는 `role="status"`(오류는 `role="alert"`)를 씁니다.
+`.claude/settings.local.json`에 **Stop 훅**이 걸려 있어, 세션 종료 시
+`extract-my-prompts.sh`가 이 폴더의 Claude Code 세션에서 사용자가 입력한
+프롬프트만 뽑아 [Prompt.md](Prompt.md)에 append한다. `settings.local.json`은
+개인/머신 전용이라 `.gitignore` 처리돼 있다(커밋되지 않음).
