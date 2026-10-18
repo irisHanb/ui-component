@@ -172,7 +172,24 @@ override한다. 요지:
 
 ## 프롬프트 기록 훅
 
-`.claude/settings.local.json`에 **Stop 훅**이 걸려 있어, 세션 종료 시
-`extract-my-prompts.sh`가 이 폴더의 Claude Code 세션에서 사용자가 입력한
-프롬프트만 뽑아 [Prompt.md](Prompt.md)에 append한다. `settings.local.json`은
-개인/머신 전용이라 `.gitignore` 처리돼 있다(커밋되지 않음).
+`.claude/settings.local.json`의 **Stop 훅**이 응답이 끝날 때마다
+`extract-my-prompts.sh`를 인자 없이 실행한다. 스크립트는
+`~/.claude/projects/` 아래 세션 jsonl 중 이 폴더(`cwd`)의 최신 세션에서 사용자가
+입력한 프롬프트만 뽑아 실행 위치의 [my-prompts.md](my-prompts.md)를 **덮어쓴다**.
+`settings.local.json`은 개인/머신 전용이라 `.gitignore` 처리돼 있다(커밋되지
+않음). 훅 command가 절대 경로라 다른 머신에서는 경로를 고쳐야 한다.
+
+기록에서 빼는 것(`extract-my-prompts.sh`의 추출 단계):
+
+| 대상 | 처리 |
+| --- | --- |
+| 도구 출력·메타 메시지, `Caveat:` 래퍼 | 메시지 전체 제외 |
+| `<system-reminder`·`<local-command`·`<command-`·`<bash-input`·`<bash-stdout`로 시작하는 주입 | 메시지 전체 제외 |
+| `<ide_…>…</ide_…>`, `<browser_instruction>…</browser_instruction>` 블록 | 블록만 잘라 내고 나머지 입력은 유지 |
+| git 동작만 지시한 짧은 입력("commit", "commit, push 해", "make pr to main", "새 브랜치 만들어서 commit" 등) | `is_git_only()`: 모든 단어가 git 동작어·보조어이고 동작어가 1개 이상, 12단어 이하일 때 제외. 다른 요청이 섞이면 유지 |
+
+`Prompt.md`에 전 세션을 이어붙이려면 훅 command를
+`extract-my-prompts.sh --append -o Prompt.md`로 바꾼다. `--append`는
+`Prompt.md.state`에 마지막 기록 시각을 저장하고 그 이후 프롬프트만 추가한다.
+`my-prompts.md`·`Prompt.md`·`Prompt.md.state`는 스크립트가 만드는 파일이라 직접
+편집하지 않는다. 저장소가 public이라 커밋하면 프롬프트 기록이 공개된다.

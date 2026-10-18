@@ -21,6 +21,7 @@
 #   각 줄에 cwd·sessionId 필드가 있다.
 #   기본 모드는 cwd가 일치하는 jsonl 중 가장 최근에 수정된 1개(= 이번 세션)만 본다.
 #   user 메시지 중 "내가 친 텍스트"만 남기고 도구 출력·메타·시스템 주입은 제외한다.
+#   IDE·브라우저 확장이 붙이는 안내 블록과 git 동작만 지시한 짧은 입력(commit, push 등)도 제외한다.
 #   파싱은 추가 설치 없는 python3 로 처리한다(jq 불필요).
 
 set -euo pipefail
@@ -99,6 +100,21 @@ else:
     files = [max(matched, key=os.path.getmtime)]
 
 # 3) 내가 입력한 프롬프트만 추출
+# git 동작만 지시한 짧은 프롬프트("commit", "commit, push 해", "make pr to main",
+# "새 브랜치 만들어서 commit" 등)는 기록하지 않는다. 모든 단어가 아래 목록에 있고
+# git 동작어가 하나 이상일 때만 제외하므로, "main에 push하면 자동 배포되도록 해"처럼
+# 다른 요청이 섞인 프롬프트는 남는다.
+GIT_ACTION = r"(?:commit|push|pull|pr|merge|rebase|branch|checkout|switch|stash|fetch|커밋|푸시|브랜치|머지|병합)"
+GIT_FILLER = r"(?:git|main|master|origin|to|make|create|open|a|new|and|then|please|request|해|해줘|해주세요|하고|하자|만들어|만들어줘|만들어서|만들고|새|새로|올려|올려줘|진행|으로|로|에|을|를)"
+PARTICLE = r"(?:으로|로|에|에서|을|를|도|해|하고|해줘)?"
+GIT_TOKEN = re.compile(rf"^(?:{GIT_ACTION}|{GIT_FILLER}){PARTICLE}$", re.I)
+GIT_ACT = re.compile(rf"^{GIT_ACTION}{PARTICLE}$", re.I)
+
+def is_git_only(t):
+    words = [w for w in re.split(r"[\s,.!?·/]+", t) if w]
+    return (0 < len(words) <= 12 and all(GIT_TOKEN.match(w) for w in words)
+            and any(GIT_ACT.match(w) for w in words))
+
 prompts = []
 for f in files:
     with open(f, encoding="utf-8") as fh:
@@ -121,6 +137,8 @@ for f in files:
             # <ide_selection>…</ide_selection> 등)은 내가 친 텍스트가 아니므로 도려낸다.
             # 블록만 제거하고 실제 입력은 보존한다(통째로 버리지 않음).
             text = re.sub(r"<ide_[^>]*>.*?</ide_[^>]*>", "", text, flags=re.DOTALL)
+            # 브라우저 확장이 프롬프트 앞에 붙이는 안내 블록도 같은 방식으로 도려낸다.
+            text = re.sub(r"<browser_instruction>.*?</browser_instruction>", "", text, flags=re.DOTALL)
             text = text.strip()
             # 빈 줄 / 시스템 주입(local-command·system-reminder 등) / Caveat 래퍼 제외.
             # 단, 사용자가 친 <태그> 프롬프트는 살리기 위해 known 래퍼만 정확히 거른다.
@@ -130,6 +148,8 @@ for f in files:
             if low.startswith("<bash-input") or low.startswith("<bash-stdout") \
                or low.startswith("<local-command") or low.startswith("<command-") \
                or low.startswith("<system-reminder"):
+                continue
+            if is_git_only(text):
                 continue
             prompts.append((o.get("timestamp", ""), text))
 
